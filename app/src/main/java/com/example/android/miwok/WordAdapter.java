@@ -12,37 +12,58 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class WordAdapter extends ArrayAdapter<Word>{
+public class WordAdapter extends ArrayAdapter<Word> {
 
-    public WordAdapter(Activity context, ArrayList<Word>, numbers){
-        super(context, 0 , numbers);
+    //Resource id for background color of list
+    private int mColorResourceId;
+
+    public WordAdapter(Activity context, ArrayList<Word> words, int colorResourceId) {
+        super(context, 0, words);
+        mColorResourceId = colorResourceId;
     }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Check if the existing view is being reused, otherwise inflate the view
+
+        // check if the current view is reused else inflate the view
         View listItemView = convertView;
-        if(listItemView == null) {
-            listItemView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.list_item, parent, false);
+        if(listItemView == null){
+            listItemView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
-        // Get the {@link AndroidFlavor} object located at this position in the list
-        Word currentWord = getItem(position);
+        //get the object located at position
+        Word word_item = getItem(position);
 
-        // Find the TextView in the list_item.xml layout with the ID version_name
-        TextView miwokTextView = (TextView) listItemView.findViewById(R.id.miwok_text_view)
-        // Get the version name from the current AndroidFlavor object and
-        // set this text on the name TextView
-        miwokTextView.setText(currentWord.getMiwokTranslation());
-
-        // Find the TextView in the list_item.xml layout with the ID version_number
+        //find the textview in list_item with id default_text_view
         TextView defaultTextView = (TextView) listItemView.findViewById(R.id.default_text_view);
-        // Get the version number from the current AndroidFlavor object and
-        // set this text on the number TextView
-        defaultTextView.setText(currentWord.getDefaultTranslation());
+        //gets the default Translation and set it to the text of this textView
+        defaultTextView.setText(word_item.getDefaultTranslation());
 
-        // Return the whole list item layout (containing 2 TextViews and an ImageView)
-        // so that it can be shown in the ListView
+        //find the textview in list_item with id miwok_text_view
+        TextView miwokTextView = (TextView) listItemView.findViewById(R.id.miwok_text_view);
+        //gets the miwok Translation and set it to the text of this textView
+        miwokTextView.setText(word_item.getMiwokTranslation());
+
+       /* //find the image view with id image
+        ImageView mImageView = (ImageView) listItemView.findViewById(R.id.image);
+        if(word_item.hasImage()) {
+
+            //get the imageResource get and set it as source of the image view
+            mImageView.setImageResource(word_item.getImageResourceId());
+
+            //make the image view visible
+            mImageView.setVisibility(View.VISIBLE);
+        }
+        else {
+            mImageView.setVisibility(View.GONE);
+        }
+
+        //seach for the view with the give id
+        View textContainer = listItemView.findViewById(R.id.text_container);
+
+        // set its backgroung resource to the mColorResourceId
+        textContainer.setBackgroundResource(mColorResourceId);
+*/
         return listItemView;
     }
 }
